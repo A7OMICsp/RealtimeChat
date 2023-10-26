@@ -2,6 +2,7 @@ import express from 'express';
 import logger from 'morgan';
 import dotenv from 'dotenv';
 import { createClient } from '@libsql/client'
+import Database from './db.js';
 
 import { Server } from 'socket.io';
 import { createServer} from 'node:http';
@@ -18,17 +19,7 @@ const io = new Server(server, {
     }
 });
 
-const db = createClient({
-    url: process.env.DB_URL,
-    authToken: process.env.DB_AUTH_TOKEN,
-})
-
-await db.execute(`
-    CREATE TABLE IF NOT EXISTS messages (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        message TEXT NOT NULL
-    )
-`);
+const db = new Database();
 
 io.on('connection', async (socket) => {
     console.log('a user connected');
@@ -80,5 +71,5 @@ app.get('/', (req, res) => {
 });
 
 server.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+    console.log(`Server listening on port ${port}, running on http://localhost:${port}`);
 });
