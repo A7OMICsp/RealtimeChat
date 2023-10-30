@@ -59,8 +59,8 @@ io.on('connection', async (socket) => {
         }
     }
 
-    socket.on('disconnect', () => {
-        console.log('user disconnected')
+    socket.on('disconnect', (reason) => {
+        console.log('user disconnected', reason)
     });
 });
 

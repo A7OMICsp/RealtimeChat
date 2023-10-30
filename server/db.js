@@ -3,6 +3,8 @@ import { createClient,  } from '@libsql/client';
 
 export default class Database {
 
+    db = null;
+
     constructor() {
         this.db = createClient({
             url: process.env.DB_URL,
