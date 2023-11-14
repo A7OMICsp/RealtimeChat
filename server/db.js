@@ -26,10 +26,16 @@ export default class Database {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL,
                 chat_id INTEGER NOT NULL,
-                FOREIGN KEY(user_id) REFERENCES user(id),
-                FOREIGN KEY(chat_id) REFERENCES chat(id)
+                FOREIGN KEY(user_id) REFERENCES users(id),
+                FOREIGN KEY(chat_id) REFERENCES chats(id)
             )`
         );
+
+        await this.db.execute(`CREATE TABLE IF NOT EXISTS chats (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                img_url TEXT
+        )`)
             
         await this.db.execute(`CREATE TABLE IF NOT EXISTS messages (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,8 +43,8 @@ export default class Database {
                 user_id INTEGER NOT NULL,
                 message TEXT NOT NULL,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY(chat_id) REFERENCES chat(id),
-                FOREIGN KEY(user_id) REFERENCES user(id)
+                FOREIGN KEY(chat_id) REFERENCES chats(id),
+                FOREIGN KEY(user_id) REFERENCES users(id)
             )`
         );
     }
